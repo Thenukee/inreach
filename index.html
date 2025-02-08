@@ -214,28 +214,13 @@
         width: 120px;
         height: 120px;
       }
-      .box-container {
-      width: 150px;
-      height: 150px;
-      perspective: 700px;
-    }
-    .box {
-      width: 150px;
-      height: 150px;
-      transform: rotateX(-20deg) rotateY(25deg);
-    }
-    .face {
-      width: 150px;
-      height: 150px;
-    }
-    /* Recalculate translation since half of 150 is 75px */
-    .front  { transform: rotateY(0deg)   translateZ(75px); }
-    .back   { transform: rotateY(180deg) translateZ(75px); }
-    .left   { transform: rotateY(-90deg) translateZ(75px); }
-    .right  { transform: rotateY(90deg)  translateZ(75px); }
-    .top    { transform: rotateX(90deg)  translateZ(75px); }
-    .bottom { transform: rotateX(-90deg) translateZ(75px); }
-      
+      /* Recalculate translation since half of 120 is 60px */
+      .front  { transform: rotateY(0deg)   translateZ(60px); }
+      .back   { transform: rotateY(180deg) translateZ(60px); }
+      .left   { transform: rotateY(-90deg) translateZ(60px); }
+      .right  { transform: rotateY(90deg)  translateZ(60px); }
+      .top    { transform: rotateX(90deg)  translateZ(60px); }
+      .bottom { transform: rotateX(-90deg) translateZ(60px); }
     }
   </style>
 </head>
@@ -351,6 +336,24 @@
 
     // Reset orientation if mouse leaves
     boxContainer.addEventListener('mouseleave', () => {
+      box.style.transform = 'rotateX(-20deg) rotateY(25deg)';
+    });
+
+    // For smartphones: add touch events for rotation
+    boxContainer.addEventListener('touchmove', (e) => {
+      e.preventDefault(); // Prevent scrolling while interacting with the box
+      const touch = e.touches[0];
+      const rect = boxContainer.getBoundingClientRect();
+      const xCenter = rect.width / 2;
+      const yCenter = rect.height / 2;
+      const xPos = touch.clientX - rect.left;
+      const yPos = touch.clientY - rect.top;
+      const rotateY = ((xPos - xCenter) / rect.width) * 40;
+      const rotateX = -((yPos - yCenter) / rect.height) * 40;
+      box.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    }, { passive: false });
+
+    boxContainer.addEventListener('touchend', () => {
       box.style.transform = 'rotateX(-20deg) rotateY(25deg)';
     });
 
