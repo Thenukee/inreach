@@ -39,6 +39,8 @@
       left: 0;
       overflow: hidden;
       z-index: 1;
+      /* Apply a subtle hit (pulse) effect on load */
+      animation: hitEffect 1s ease-out forwards;
     }
     .star {
       position: absolute;
@@ -57,6 +59,22 @@
         transform: translateY(-100vh) scale(2);
         opacity: 0;
       }
+    }
+    /* Keyframes for the initial hit (pulse) effect */
+    @keyframes hitEffect {
+      0% { filter: brightness(1); }
+      50% { filter: brightness(1.3); }
+      100% { filter: brightness(1); }
+    }
+    /* Keyframes for the star collision (blur) effect */
+    @keyframes starCollision {
+      0% { filter: blur(0px); opacity: 1; }
+      50% { filter: blur(8px); opacity: 0.6; }
+      100% { filter: blur(0px); opacity: 1; }
+    }
+    /* When the collision effect is triggered */
+    .stars.collision {
+      animation: starCollision 0.5s ease-out !important;
     }
 
     /* ---------- PAGE TEXT ---------- */
@@ -82,6 +100,7 @@
       justify-content: center;
       gap: 10px;
       margin-top: 20px;
+      margin-bottom: 50px; /* Increased bottom gap before the cube */
     }
     .time-box {
       background: #222;
@@ -107,7 +126,7 @@
     .secret-text {
       display: none;
       font-size: 1.5rem;
-      margin-top: 60px;  /* Increased space between the box and this text */
+      margin-top: 120px;  /* Increased gap between the cube and this text */
       font-weight: 300;
       opacity: 0;
       transition: opacity 0.5s ease-in-out;
@@ -119,7 +138,7 @@
 
     /* ---------- 3D BOX (Perfect Cube) ---------- */
     .box-container {
-      margin: 30px auto;
+      margin: 100px auto;  /* Increased top & bottom margin around the box */
       perspective: 800px; 
       cursor: pointer; /* Indicate it's clickable */
     }
@@ -135,12 +154,12 @@
     }
     .face {
       position: absolute;
-      width: 150px; 
-      height: 150px; 
-      background: #c8a577; 
+      width: 150px;
+      height: 150px;
+      background: #c8a577;
       border: 1px solid rgba(0, 0, 0, 0.2);
     }
-    /* Each face is translated half the box’s depth => 75px */
+    /* Each face is translated half the box’s depth (75px for 150px width) */
     .front  { transform: rotateY(0deg)   translateZ(75px); }
     .back   { transform: rotateY(180deg) translateZ(75px); }
     .left   { transform: rotateY(-90deg) translateZ(75px); }
@@ -148,7 +167,8 @@
     .top    { transform: rotateX(90deg)  translateZ(75px); }
     .bottom { transform: rotateX(-90deg) translateZ(75px); }
 
-    .front-content {
+    /* Content for each face */
+    .face-content {
       width: 100%;
       height: 100%;
       display: flex;
@@ -156,8 +176,7 @@
       justify-content: center;
       align-items: center;
     }
-    /* Each line of text inside the box */
-    .front-content .line {
+    .face-content .line {
       display: block;
       text-align: center;
       font-size: 2rem;
@@ -176,7 +195,7 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      margin: 20px; /* Added space around the logo */
+      /* Removed extra margin to ensure centering */
       transform: translate(-50%, -50%) scale(0.01);
       width: 200px;
       height: 200px;
@@ -187,7 +206,7 @@
     .logo.glow {
       transform: translate(-50%, -50%) scale(1);
       opacity: 1;
-      /* Reduced intensity and spread for a lighter, subtler neon glow */
+      /* Lighter, subtler neon glow */
       filter: drop-shadow(0 0 5px #ffea00) drop-shadow(0 0 10px #ffea00) drop-shadow(0 0 15px #ffea00);
     }
 
@@ -203,7 +222,7 @@
       .time-box {
         width: 60px;
       }
-      .front-content .line {
+      .face-content .line {
         font-size: 1.5rem;
       }
       .box {
@@ -221,6 +240,9 @@
       .right  { transform: rotateY(90deg)  translateZ(60px); }
       .top    { transform: rotateX(90deg)  translateZ(60px); }
       .bottom { transform: rotateX(-90deg) translateZ(60px); }
+      .secret-text {
+        margin-top: 100px;
+      }
     }
   </style>
 </head>
@@ -231,7 +253,7 @@
   <div class="container">
     <h1>Something Big Is Coming!</h1>
     <p>We're working on something extraordinary. Stay tuned!</p>
-    
+
     <!-- Time Container with Matching Boxes -->
     <div class="time-container" id="timeContainer">
       <div class="time-box">
@@ -255,19 +277,50 @@
     <!-- 3D Box -->
     <div class="box-container" id="boxContainer">
       <div class="box" id="box">
+        <!-- Front Face -->
         <div class="face front">
-          <div class="front-content">
+          <div class="face-content">
             <span class="line">COMING</span>
             <span class="line">SOON</span>
           </div>
         </div>
-        <div class="face back"></div>
-        <div class="face left"></div>
-        <div class="face right"></div>
-        <div class="face top"></div>
-        <div class="face bottom"></div>
+        <!-- Back Face -->
+        <div class="face back">
+          <div class="face-content">
+            <span class="line">COMING</span>
+            <span class="line">SOON</span>
+          </div>
+        </div>
+        <!-- Left Face -->
+        <div class="face left">
+          <div class="face-content">
+            <span class="line">COMING</span>
+            <span class="line">SOON</span>
+          </div>
+        </div>
+        <!-- Right Face -->
+        <div class="face right">
+          <div class="face-content">
+            <span class="line">COMING</span>
+            <span class="line">SOON</span>
+          </div>
+        </div>
+        <!-- Top Face -->
+        <div class="face top">
+          <div class="face-content">
+            <span class="line">COMING</span>
+            <span class="line">SOON</span>
+          </div>
+        </div>
+        <!-- Bottom Face -->
+        <div class="face bottom">
+          <div class="face-content">
+            <span class="line">COMING</span>
+            <span class="line">SOON</span>
+          </div>
+        </div>
       </div>
-      <!-- Logo hidden initially -->
+      <!-- Logo (hidden initially) -->
       <img src="./assets/logo.png" alt="Logo" class="logo" id="logo" />
     </div>
 
@@ -321,8 +374,9 @@
     const box = document.getElementById('box');
     const logo = document.getElementById('logo');
     const secretText = document.getElementById('secret-text');
+    const stars = document.getElementById('stars');
 
-    // Tilt the box with mouse movement
+    // Rotate the box with mouse movement
     boxContainer.addEventListener('mousemove', (e) => {
       const rect = boxContainer.getBoundingClientRect();
       const xCenter = rect.width / 2;
@@ -334,12 +388,12 @@
       box.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
     });
 
-    // Reset orientation if mouse leaves
+    // Reset orientation on mouse leave
     boxContainer.addEventListener('mouseleave', () => {
       box.style.transform = 'rotateX(-20deg) rotateY(25deg)';
     });
 
-    // For smartphones: add touch events for rotation
+    // For touch devices: allow rotation via touchmove (without resetting on touchend)
     boxContainer.addEventListener('touchmove', (e) => {
       e.preventDefault(); // Prevent scrolling while interacting with the box
       const touch = e.touches[0];
@@ -352,22 +406,18 @@
       const rotateX = -((yPos - yCenter) / rect.height) * 40;
       box.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
     }, { passive: false });
-
-    boxContainer.addEventListener('touchend', () => {
-      box.style.transform = 'rotateX(-20deg) rotateY(25deg)';
-    });
-
-    // On click: fade out the box, speed up stars, and add neon shadow to the logo
+    
+    // On click: fade out the box, speed up stars, trigger star collision, and show the logo with neon glow
     boxContainer.addEventListener('click', () => {
-      // Hide 3D box
       box.classList.add('fade-out');
-      // Speed up star animations significantly
       document.querySelectorAll('.star').forEach(star => {
         star.style.animationDuration = '0.2s';
       });
-      // Add neon yellow shadow to logo (no animation)
+      stars.classList.add('collision');
+      setTimeout(() => {
+        stars.classList.remove('collision');
+      }, 500);
       logo.classList.add('glow');
-      // Reveal secret text if desired
       secretText.classList.add('show');
     });
   </script>
