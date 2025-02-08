@@ -1,181 +1,354 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Something Big is Coming!</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-        body {
-            background: #111;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            text-align: center;
-            flex-direction: column;
-            overflow: hidden;
-            position: relative;
-        }
-        .container {
-            position: relative;
-            max-width: 80%;
-            z-index: 2;
-        }
-        h1 {
-            font-size: 3rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-weight: 700;
-        }
-        p {
-            font-size: 1.2rem;
-            margin-top: 10px;
-            font-weight: 400;
-        }
-        .countdown {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-        .mystery-box {
-            width: 200px;
-            height: 200px;
-            background: linear-gradient(45deg, #ff6b6b, #f7b733);
-            border-radius: 10px;
-            margin-top: 30px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: transform 0.3s ease-in-out;
-        }
-        .mystery-box:hover {
-            transform: scale(1.1);
-            animation: vibrate 0.1s infinite alternate;
-        }
-        @keyframes vibrate {
-            from {
-                transform: translateX(-3px) translateY(-3px);
-            }
-            to {
-                transform: translateX(3px) translateY(3px);
-            }
-        }
-        .lid {
-            width: 100%;
-            height: 40px;
-            background: #ff4757;
-            position: absolute;
-            top: -10px;
-            border-radius: 5px;
-            transition: transform 0.3s;
-        }
-        .mystery-box:hover .lid {
-            transform: rotate(-15deg) translateY(-10px);
-        }
-        .secret-text {
-            display: none;
-            font-size: 1.5rem;
-            margin-top: 20px;
-            font-weight: 300;
-        }
-        .stars {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            overflow: hidden;
-            z-index: 1;
-        }
-        .star {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: white;
-            opacity: 0.8;
-            animation: travelStars linear infinite;
-        }
-        @keyframes travelStars {
-            from {
-                transform: translateY(100vh) scale(0.5);
-                opacity: 1;
-            }
-            to {
-                transform: translateY(-100vh) scale(2);
-                opacity: 0;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Something Big Is Coming!</title>
+
+  <!-- Use Google Fonts: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ---------- GLOBAL STYLES ---------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #111;
+      color: #fff;
+      min-height: 100vh;
+    }
+    .container {
+      text-align: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      position: relative;
+      z-index: 2; /* above stars */
+    }
+
+    /* ---------- STAR BACKGROUND ---------- */
+    .stars {
+      position: fixed; 
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      opacity: 0.8;
+      animation: travelStars linear infinite;
+    }
+    @keyframes travelStars {
+      from {
+        transform: translateY(100vh) scale(0.5);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-100vh) scale(2);
+        opacity: 0;
+      }
+    }
+
+    /* ---------- PAGE TEXT ---------- */
+    h1 {
+      font-size: 3rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-weight: 700;
+      margin-top: 40px;
+    }
+    p {
+      font-size: 1.2rem;
+      margin-top: 10px;
+      font-weight: 400;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ---------- TIME COUNT DESIGN ---------- */
+    .time-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .time-box {
+      background: #222;
+      padding: 10px;
+      border: 2px solid #c8a577;
+      border-radius: 5px;
+      width: 80px;
+      text-align: center;
+    }
+    .time-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      display: block;
+    }
+    .time-label {
+      font-size: 1rem;
+      margin-top: 5px;
+      color: #ccc;
+      display: block;
+    }
+
+    /* ---------- SECRET TEXT ---------- */
+    .secret-text {
+      display: none;
+      font-size: 1.5rem;
+      margin-top: 60px;  /* Increased space between the box and this text */
+      font-weight: 300;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+    .secret-text.show {
+      display: block;
+      opacity: 1;
+    }
+
+    /* ---------- 3D BOX (Perfect Cube) ---------- */
+    .box-container {
+      margin: 30px auto;
+      perspective: 800px; 
+      cursor: pointer; /* Indicate it's clickable */
+    }
+    .box {
+      width: 150px;
+      height: 150px;
+      margin: 0 auto;
+      position: relative;
+      transform-style: preserve-3d;
+      transform: rotateX(-20deg) rotateY(25deg);
+      transition: transform 0.2s linear, opacity 1s ease;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    .face {
+      position: absolute;
+      width: 150px; 
+      height: 150px; 
+      background: #c8a577; 
+      border: 1px solid rgba(0, 0, 0, 0.2);
+    }
+    /* Each face is translated half the box’s depth => 75px */
+    .front  { transform: rotateY(0deg)   translateZ(75px); }
+    .back   { transform: rotateY(180deg) translateZ(75px); }
+    .left   { transform: rotateY(-90deg) translateZ(75px); }
+    .right  { transform: rotateY(90deg)  translateZ(75px); }
+    .top    { transform: rotateX(90deg)  translateZ(75px); }
+    .bottom { transform: rotateX(-90deg) translateZ(75px); }
+
+    .front-content {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    /* Each line of text inside the box */
+    .front-content .line {
+      display: block;
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    /* Fade-out class to make the box disappear */
+    .box.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* ---------- LOGO WITH SUBTLE NEON YELLOW SHADOW ---------- */
+    .logo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin: 20px; /* Added space around the logo */
+      transform: translate(-50%, -50%) scale(0.01);
+      width: 200px;
+      height: 200px;
+      opacity: 0;
+      transition: transform 0.8s ease, opacity 0.8s ease;
+      z-index: 999;
+    }
+    .logo.glow {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+      /* Reduced intensity and spread for a lighter, subtler neon glow */
+      filter: drop-shadow(0 0 5px #ffea00) drop-shadow(0 0 10px #ffea00) drop-shadow(0 0 15px #ffea00);
+    }
+
+    /* ---------- MEDIA QUERIES ---------- */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
+        margin-top: 30px;
+      }
+      p {
+        font-size: 1rem;
+      }
+      .time-box {
+        width: 60px;
+      }
+      .front-content .line {
+        font-size: 1.5rem;
+      }
+      .box {
+        width: 120px;
+        height: 120px;
+      }
+      .face {
+        width: 120px;
+        height: 120px;
+      }
+      /* Each face is translated half the box’s depth => 60px */
+      .front, .back, .left, .right, .top, .bottom {
+        transform: translateZ(60px);
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="stars" id="stars"></div>
-    <div class="container">
-        <h1>Something Big is Coming!</h1>
-        <p>We're working on something extraordinary. Stay tuned!</p>
-        <div class="countdown" id="countdown"></div>
-        <div class="mystery-box" id="mysteryBox" onclick="revealSecret()">
-            <div class="lid"></div>
-            <span>??</span>
-        </div>
-        <p class="secret-text" id="secret-text">Not yet! Patience is key. 😉</p>
-    </div>
-    <script>
-        function revealSecret() {
-            document.getElementById('secret-text').style.display = 'block';
-        }
-        
-        function countdownTimer() {
-            const launchDate = new Date('2025-02-20T00:00:00').getTime(); 
-            setInterval(() => {
-                const now = new Date().getTime();
-                const timeLeft = launchDate - now;
-                if (timeLeft <= 0) {
-                    document.getElementById('countdown').innerHTML = "🚀 We are Live!";
-                } else {
-                    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-                    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-                    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-                    document.getElementById('countdown').innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-                }
-            }, 1000);
-        }
-        countdownTimer();
-        
-        function generateStars() {
-            const starsContainer = document.getElementById('stars');
-            for (let i = 0; i < 100; i++) {
-                let star = document.createElement('div');
-                star.classList.add('star');
-                star.style.left = Math.random() * 100 + "vw";
-                star.style.top = Math.random() * 100 + "vh";
-                star.style.animationDuration = (Math.random() * 3 + 2) + "s";
-                starsContainer.appendChild(star);
-            }
-        }
-        generateStars();
+  <!-- Star background -->
+  <div class="stars" id="stars"></div>
 
-        document.getElementById('mysteryBox').addEventListener('mouseenter', () => {
-            document.querySelectorAll('.star').forEach(star => {
-                star.style.animationDuration = (Math.random() * 0.7 + 0.5) + 's';
-            });
-        });
-        
-        document.getElementById('mysteryBox').addEventListener('mouseleave', () => {
-            document.querySelectorAll('.star').forEach(star => {
-                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
-            });
-        });
-    </script>
+  <div class="container">
+    <h1>Something Big Is Coming!</h1>
+    <p>We're working on something extraordinary. Stay tuned!</p>
+    
+    <!-- Time Container with Matching Boxes -->
+    <div class="time-container" id="timeContainer">
+      <div class="time-box">
+        <span class="time-value" id="days">0</span>
+        <span class="time-label">Days</span>
+      </div>
+      <div class="time-box">
+        <span class="time-value" id="hours">0</span>
+        <span class="time-label">Hours</span>
+      </div>
+      <div class="time-box">
+        <span class="time-value" id="minutes">0</span>
+        <span class="time-label">Minutes</span>
+      </div>
+      <div class="time-box">
+        <span class="time-value" id="seconds">0</span>
+        <span class="time-label">Seconds</span>
+      </div>
+    </div>
+
+    <!-- 3D Box -->
+    <div class="box-container" id="boxContainer">
+      <div class="box" id="box">
+        <div class="face front">
+          <div class="front-content">
+            <span class="line">COMING</span>
+            <span class="line">SOON</span>
+          </div>
+        </div>
+        <div class="face back"></div>
+        <div class="face left"></div>
+        <div class="face right"></div>
+        <div class="face top"></div>
+        <div class="face bottom"></div>
+      </div>
+      <!-- Logo hidden initially -->
+      <img src="logo.png" alt="Logo" class="logo" id="logo" />
+    </div>
+
+    <!-- Secret text that appears on box click (if desired) -->
+    <p class="secret-text" id="secret-text">Not yet! Patience is key. 😉</p>
+  </div>
+
+  <script>
+    /* ---------- STAR BACKGROUND GENERATOR ---------- */
+    function generateStars() {
+      const starsContainer = document.getElementById('stars');
+      if (!starsContainer) return;
+      for (let i = 0; i < 100; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
+        star.style.left = Math.random() * 100 + "vw";
+        star.style.top = Math.random() * 100 + "vh";
+        star.style.animationDuration = (Math.random() * 3 + 2) + "s";
+        starsContainer.appendChild(star);
+      }
+    }
+    generateStars();
+
+    /* ---------- COUNTDOWN TIMER (Updating Each Time Box) ---------- */
+    function countdownTimer() {
+      const launchDate = new Date('2025-02-20T00:00:00').getTime();
+      setInterval(() => {
+        const now = new Date().getTime();
+        const timeLeft = launchDate - now;
+        if (timeLeft <= 0) {
+          document.getElementById('days').textContent = '0';
+          document.getElementById('hours').textContent = '0';
+          document.getElementById('minutes').textContent = '0';
+          document.getElementById('seconds').textContent = '0';
+        } else {
+          const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+          document.getElementById('days').textContent = days;
+          document.getElementById('hours').textContent = hours;
+          document.getElementById('minutes').textContent = minutes;
+          document.getElementById('seconds').textContent = seconds;
+        }
+      }, 1000);
+    }
+    countdownTimer();
+
+    /* ---------- BOX INTERACTION ---------- */
+    const boxContainer = document.getElementById('boxContainer');
+    const box = document.getElementById('box');
+    const logo = document.getElementById('logo');
+    const secretText = document.getElementById('secret-text');
+
+    // Tilt the box with mouse movement
+    boxContainer.addEventListener('mousemove', (e) => {
+      const rect = boxContainer.getBoundingClientRect();
+      const xCenter = rect.width / 2;
+      const yCenter = rect.height / 2;
+      const xPos = e.clientX - rect.left;
+      const yPos = e.clientY - rect.top;
+      const rotateY = ((xPos - xCenter) / rect.width) * 40;
+      const rotateX = -((yPos - yCenter) / rect.height) * 40;
+      box.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+
+    // Reset orientation if mouse leaves
+    boxContainer.addEventListener('mouseleave', () => {
+      box.style.transform = 'rotateX(-20deg) rotateY(25deg)';
+    });
+
+    // On click: fade out the box, speed up stars, and add neon shadow to the logo
+    boxContainer.addEventListener('click', () => {
+      // Hide 3D box
+      box.classList.add('fade-out');
+      // Speed up star animations significantly
+      document.querySelectorAll('.star').forEach(star => {
+        star.style.animationDuration = '0.2s';
+      });
+      // Add neon yellow shadow to logo (no animation)
+      logo.classList.add('glow');
+      // Reveal secret text if desired
+      secretText.classList.add('show');
+    });
+  </script>
 </body>
 </html>

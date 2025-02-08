@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Something Big is Coming!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: #111;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+        .container {
+            position: relative;
+            max-width: 80%;
+            z-index: 2;
+        }
+        h1 {
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 700;
+        }
+        p {
+            font-size: 1.2rem;
+            margin-top: 10px;
+            font-weight: 400;
+        }
+        .countdown {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .mystery-box {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(45deg, #ff6b6b, #f7b733);
+            border-radius: 10px;
+            margin-top: 30px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+        }
+        .mystery-box:hover {
+            transform: scale(1.1);
+            animation: vibrate 0.1s infinite alternate;
+        }
+        @keyframes vibrate {
+            from {
+                transform: translateX(-3px) translateY(-3px);
+            }
+            to {
+                transform: translateX(3px) translateY(3px);
+            }
+        }
+        .lid {
+            width: 100%;
+            height: 40px;
+            background: #ff4757;
+            position: absolute;
+            top: -10px;
+            border-radius: 5px;
+            transition: transform 0.3s;
+        }
+        .mystery-box:hover .lid {
+            transform: rotate(-15deg) translateY(-10px);
+        }
+        .secret-text {
+            display: none;
+            font-size: 1.5rem;
+            margin-top: 20px;
+            font-weight: 300;
+        }
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            opacity: 0.8;
+            animation: travelStars linear infinite;
+        }
+        @keyframes travelStars {
+            from {
+                transform: translateY(100vh) scale(0.5);
+                opacity: 1;
+            }
+            to {
+                transform: translateY(-100vh) scale(2);
+                opacity: 0;
+            }
+        }
+        .logo {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            opacity: 0;
+            transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .mystery-box.open .logo {
+            transform: translate(calc(50vw - 50%), -50%) scale(1.2);
+            opacity: 1;
+        }
+
+        .glow {
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.9))
+                drop-shadow(0 0 30px rgba(82, 255, 251, 0.8))
+                drop-shadow(0 0 45px rgba(120, 149, 255, 0.7));
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.9))
+                    drop-shadow(0 0 30px rgba(82, 255, 251, 0.8))
+                    drop-shadow(0 0 45px rgba(120, 149, 255, 0.7));
+            }
+            50% {
+                filter: drop-shadow(0 0 20px rgba(255, 255, 255, 1))
+                    drop-shadow(0 0 40px rgba(82, 255, 251, 0.9))
+                    drop-shadow(0 0 60px rgba(120, 149, 255, 0.8));
+            }
+            100% {
+                filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.9))
+                    drop-shadow(0 0 30px rgba(82, 255, 251, 0.8))
+                    drop-shadow(0 0 45px rgba(120, 149, 255, 0.7));
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(calc(50vw - 50%), -50%) scale(1.2);
+            }
+            50% {
+                transform: translate(calc(50vw - 50%), calc(-50% - 10px)) scale(1.2);
+            }
+        }
+
+        .mystery-box.open .logo.glow {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    <div class="container">
+        <h1>Something Big is Coming!</h1>
+        <p>We're working on something extraordinary. Stay tuned!</p>
+        <div class="countdown" id="countdown"></div>
+        <div class="mystery-box" id="mysteryBox" onclick="revealSecret()">
+            <div class="lid"></div>
+            <span>??</span>
+            <img src="logo.png" alt="Logo" class="logo" id="logo">
+        </div>
+        <p class="secret-text" id="secret-text">Not yet! Patience is key. 😉</p>
+    </div>
+    <script>
+/* filepath: /C:/Users/ASUS/OneDrive - General Sir John Kotelawala Defence University/GITHUB/inreach/index.html */
+    function revealSecret() {
+        document.getElementById('secret-text').style.display = 'block';
+        const mysteryBox = document.getElementById('mysteryBox');
+        const logo = document.getElementById('logo');
+        
+        // Add opening animation class
+        mysteryBox.classList.add('open');
+        
+        // Sequence the animations
+        setTimeout(() => {
+            logo.classList.add('glow');
+        }, 1000);
+    }
+        function countdownTimer() {
+            const launchDate = new Date('2025-02-20T00:00:00').getTime(); 
+            setInterval(() => {
+                const now = new Date().getTime();
+                const timeLeft = launchDate - now;
+                if (timeLeft <= 0) {
+                    document.getElementById('countdown').innerHTML = "🚀 We are Live!";
+                } else {
+                    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                    document.getElementById('countdown').innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                }
+            }, 1000);
+        }
+        countdownTimer();
+        
+        function generateStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 100; i++) {
+                let star = document.createElement('div');
+                star.classList.add('star');
+                star.style.left = Math.random() * 100 + "vw";
+                star.style.top = Math.random() * 100 + "vh";
+                star.style.animationDuration = (Math.random() * 3 + 2) + "s";
+                starsContainer.appendChild(star);
+            }
+        }
+        generateStars();
+
+        document.getElementById('mysteryBox').addEventListener('mouseenter', () => {
+            document.querySelectorAll('.star').forEach(star => {
+                star.style.animationDuration = (Math.random() * 0.7 + 0.5) + 's';
+            });
+        });
+        
+        document.getElementById('mysteryBox').addEventListener('mouseleave', () => {
+            document.querySelectorAll('.star').forEach(star => {
+                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            });
+        });
+    </script>
+</body>
+</html>
