@@ -214,10 +214,28 @@
         width: 120px;
         height: 120px;
       }
-      /* Each face is translated half the box’s depth => 60px */
-      .front, .back, .left, .right, .top, .bottom {
-        transform: translateZ(60px);
-      }
+      .box-container {
+      width: 150px;
+      height: 150px;
+      perspective: 700px;
+    }
+    .box {
+      width: 150px;
+      height: 150px;
+      transform: rotateX(-20deg) rotateY(25deg);
+    }
+    .face {
+      width: 150px;
+      height: 150px;
+    }
+    /* Recalculate translation since half of 150 is 75px */
+    .front  { transform: rotateY(0deg)   translateZ(75px); }
+    .back   { transform: rotateY(180deg) translateZ(75px); }
+    .left   { transform: rotateY(-90deg) translateZ(75px); }
+    .right  { transform: rotateY(90deg)  translateZ(75px); }
+    .top    { transform: rotateX(90deg)  translateZ(75px); }
+    .bottom { transform: rotateX(-90deg) translateZ(75px); }
+      
     }
   </style>
 </head>
